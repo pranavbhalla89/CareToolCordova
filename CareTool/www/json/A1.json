@@ -1,0 +1,41 @@
+{
+    "name":"Eating",
+    "set":"Self-Care",
+    "id":"A1",
+    "page":"6",
+    "description":"The ability to use suitable utensils to bring food to the mouth & swallow food once the meal is presented on a table/tray. Includes modified food consistency.",
+    "exceptions":[
+    	"Not about the quality the swallowing function",
+    	"Not about the consistency the food eaten",
+    	"Not about whether or not patient uses adaptive utensils or equipment"
+    ],
+    "tips":[
+		"If patient receives tube feeding, the code is 'N. Not Applicable'"    
+    ],
+    "dependent":[
+    	"Patient only chews & swallows food when helper scoops & brings it to mouth. Patient does not participate in the task of bringing food to the mouth at all."
+    ],
+    "substantial":[
+    	"Patient can bring food to mouth but helper scoops all food onto utensil",
+    	"Patient can scoop all food onto the utensil but helper brings food to mouth",
+    	"Helper guides the limb & provides > 50% of the effort - assisting patient in scooping the food onto utensil & bringing it to patient's mouth"
+    ],
+	"partial":[
+		"Helper may need to guide the limb",
+		"Helper may provide <50% of the effort - assisting patient in scooping food onto utensil & bringing it to patient's mouth.",
+		"Patient can partially scoop food onto utensil & partially bring food to mouth, but is unable to complete task w/o physical help from helper"
+	],
+	"supervision":[
+		"Cueing &/or coaxing &/or supervision throughout meal maybe required for safety concerns about swallowing, possible choking &/or eating in a hurry",
+		"Helper may need to verbally guide patient in completing the task &/or provide touching/steadying assistance to patient in scooping food onto utensil & bringing it to patient's mouth"
+	],
+	"setup":[
+		"Helper only assists prior to or after eating.",
+		"Patient can scoop food, bring it to mouth, & eat, but needs assistance w/pouring, drinking, opening containers &/or cutting meat (e.g., aspects of set-up)",
+		"Patient needs assistance w/application of cuff, orthosis, prosthesis (& removing after meal)."
+	],
+	"independent":[
+		"The patient is able to use spoon, fork, cup, glass, long straw, adapted devices. Patient is able to don/apply cuff/orthosis/prosthesis for eating. Patient is able to open containers, pour liquid, & cut meat.",
+		"No helper assistance is required."
+	]    
+}
