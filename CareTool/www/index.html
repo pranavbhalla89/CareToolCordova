@@ -28,26 +28,23 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/caretool.css" />
         <title>CARE Tool</title>
     </head>
     <body>
-        <!-- <div class="app">
-            <h1>Ooo this is cool PhoneGap</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div> -->
+        <div data-role="page" id="splash-page" class="splashPage">
+            <h1 class="splashHeader">Welcome</h1>
+        </div>
 
         <div data-role="page" id="landing-page">
-            <div data-role="header">
+            <div data-role="header" class="careHeader">
                 <h1>Welcome to Care Tool</h1>
             </div><!-- /header -->
 
             <div data-role="content" class="page-content">
                 <ul data-role="listview" data-inset="true">
-                    <li><a href="#learning-page">Learning</a></li>
-                    <li><a href="#scheduling-page">Scheduling</a></li>
+                    <li><a href="#learning-page" class="careMainLink">Learning</a></li>
+                    <li><a href="#scheduling-page" class="careMainLink">Scheduling</a></li>
                 </ul>
             </div><!-- /content -->
 
@@ -56,14 +53,14 @@
 
         <!--Learning-->
         <div data-role="page" id="learning-page">
-            <div data-role="header" data-add-back-btn="true">
+            <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Exercises</h1>
             </div><!--Header-->
 
             <div data-role="content" class="page-content">
                 <ul data-role="listview">
                     <script id="hbt-learning-list" type="text/x-handlebars-template">
-                        <li><a data-activity-id={{id}}>{{name}}</a></li>
+                        <li><a data-activity-id={{id}} class="careLink">+ {{name}}</a></li>
                     </script>
                 </ul>
             </div><!--List-->
@@ -72,25 +69,26 @@
 
         <!--Activity Detail-->
         <div data-role="page" id="activity-detail-page" data-add-back-btn="true">
-            <script id="hbt-activity-detail" type="text/x-handlebars-template">
-                <div data-role="header">
-                    <h1>{{name}}</h1>
-                </div><!--Header-->
+            <div data-role="header" data-add-back-btn="true" class="careHeader">
+                <h1>Info</h1>
+            </div><!--Header-->
 
-                <div data-role="content" class="page-content">
-                    <h2>Description</h2>
-                    {{description}}
-                    <h2>Exceptions</h2>
-                    {{exceptions}}
-                    <h2>Tips</h2>
-                    {{tips}}
-                </div><!--List-->
-            </script>
+            <div data-role="content" class="page-content">
+                <script id="hbt-activity-detail" type="text/x-handlebars-template">
+                        <h1 class="infoHeader">{{name}}</h1>
+                        <h2>Description</h2>
+                        {{description}}
+                        <h2>Exceptions</h2>
+                        {{exceptions}}
+                        <h2>Tips</h2>
+                        {{tips}}
+                </script>
+            </div><!--List-->
         </div><!--Page Activity Detail-->
 
         <!--Scheduling-->
         <div data-role="page" id="scheduling-page" data-url="scheduling">
-            <div data-role="header" data-add-back-btn="true">
+            <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Patients</h1>
             </div><!--Header-->
 

@@ -1,3 +1,4 @@
+// TODO: change all clicks to touchstart events for faster response
 var sessionInfo = {
     peeteeId: 1
 };
@@ -17,6 +18,8 @@ function makeGetAsyncRequest(url, successCallback) {
 }
 
 function registerPageInits() {
+    $.mobile.pageContainer.pagecontainer("change", "#landing-page");
+
     // Learning page
     $("#learning-page").on("pagebeforecreate", function() {
         loadExercises();
@@ -78,10 +81,10 @@ function loadActivityDetail(activityId) {
     $.getJSON(url, function(activityDetail) {
         var source = $("#hbt-activity-detail").html();
         var template = Handlebars.compile(source);
-        var activityPage = $("#activity-detail-page");
+        var activityPageContent = $("#activity-detail-page .page-content");
         // clear the existing content
-        activityPage.empty();
+        activityPageContent.empty();
         var html = template(activityDetail);
-        activityPage.append(html);
+        activityPageContent.append(html);
     });
 }
