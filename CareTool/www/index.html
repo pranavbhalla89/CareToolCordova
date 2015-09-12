@@ -59,12 +59,12 @@
 
             <div data-role="content" class="page-content">
                 <ul data-role="listview">
-                    <script id="hbt-learning-list" type="text/x-handlebars-template">
-                        <li><a data-activity-id={{id}} class="careLink">+ {{name}}</a></li>
-                    </script>
+                  
                 </ul>
             </div><!--List-->
-            
+              <script id="hbt-learning-list" type="text/x-handlebars-template">
+                        <li><a data-activity-name="{{name}}" class="careLink">+ {{name}}</a></li>
+                    </script>
         </div><!--Page Learning-->
 
         <!--Activity Detail-->
@@ -74,7 +74,9 @@
             </div><!--Header-->
 
             <div data-role="content" class="page-content">
-                <script id="hbt-activity-detail" type="text/x-handlebars-template">
+
+            </div><!--List-->
+            <script id="hbt-activity-detail" type="text/x-handlebars-template">
                         <h1 class="infoHeader">{{name}}</h1>
                         <h2>Description</h2>
                         {{description}}
@@ -83,7 +85,6 @@
                         <h2>Tips</h2>
                         {{tips}}
                 </script>
-            </div><!--List-->
         </div><!--Page Activity Detail-->
 
         <!--Scheduling-->
