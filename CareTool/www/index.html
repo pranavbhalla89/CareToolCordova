@@ -93,14 +93,87 @@
             </div><!--Header-->
 
             <div data-role="content" class="page-content">
-                <ul data-role="listview">
+                <div data-role="collapsible-set">
                     <script id="hbt-patient-list" type="text/x-handlebars-template">
-                        <li><a>{{firstName}} {{lastName}}</a></li>
+                    <div data-role="collapsible">
+                    <h3>{{firstName}} {{lastName}}</h3>
+                    <p><a data-patient-id={{id}} class="scheduling-page-a score">Score</a><a data-patient-id={{id}} class="scheduling-page-a notes">Notes</a></p>
+                    </div>
                     </script>
-                </ul>
-            </div><!--List-->
+                </div>
+            </div><!--Content-->
+
+            <!-- SESSION type popup -->
+            <div data-role="popup" id="document-session-type-popup" class="ui-content page-backdrop" data-overlay-theme="a">
+                Pick a session type
+                <fieldset data-role="controlgroup">
+
+                    <input type="radio" name="document-session-type-choice" value="admission" id="document-session-type-choice-1" checked="checked">
+                    <label for="document-session-type-choice-1">1. Admission </label>
+
+                    <input type="radio" name="document-session-type-choice" value="discharge" id="document-session-type-choice-2">
+                    <label for="document-session-type-choice-2">2. Discharge</label>
+
+                    <input type="radio" name="document-session-type-choice" value="others" id="document-session-type-choice-3">
+                    <label for="document-session-type-choice-3">3. Other </label>
+
+                </fieldset>
+
+                <a id="document-session-type-next" data-role="button" data-theme="c">Next</a>
+            </div>
             
         </div><!--Page Scheduling-->
+
+        <!--Scoring Detail-->
+        <div data-role="page" id="score-page" data-add-back-btn="true">
+            <div data-role="header" data-add-back-btn="true" class="careHeader">
+                <h1></h1>
+            </div><!--Header-->
+
+            <div data-role="content" class="page-content">
+                <div>
+                    <fieldset class="ui-grid-b text-center">
+                        <div class="ui-block-a activity-btns">
+                            <fieldset data-role="controlgroup">
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-1" value="1">
+                                <label for="radio-score-choice-1">1. Dependent </label>
+                                <div class="score-choice-text dependent"></div>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-2" value="2">
+                                <label for="radio-score-choice-2">2. Substantial / Maximal Assistance </label>
+                                <div class="score-choice-text substantial"></div>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-3" value="3">
+                                <label for="radio-score-choice-3">3. Partial / Moderate Assistance</label>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-4" value="4">
+                                <label for="radio-score-choice-4">4. Supervision / Touching Assistance</label>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-5" value="5">
+                                <label for="radio-score-choice-5">5. Setup or Clean-Up Assistance</label>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-6" value="6">
+                                <label for="radio-score-choice-6">6. Independent</label>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-7" value="7">
+                                <label for="radio-score-choice-7">S. Not Attempted - Safety Concerns</label>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-8" value="8">
+                                <label for="radio-score-choice-8">N. Not Applicable</label>
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-9" value="9">
+                                <label for="radio-score-choice-9">A. Not Completed</label> 
+
+                                <input type="radio" name="radio-score-choice" id="radio-score-choice-10" value="10">
+                                <label for="radio-score-choice-10">P. Patient Refused</label> 
+
+                            </fieldset>
+                        </div>
+                    </fieldset>
+                </div><!--Buttons-->
+            </div><!--Content-->
+        </div><!--Page Scoring Detail-->
 
         <!-- Don't need this js while testing in the browser -->
         <!--<script type="text/javascript" src="cordova.js"></script> -->
