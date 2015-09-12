@@ -6,8 +6,8 @@ var sessionInfo = {
 function makeGetAsyncRequest(url, successCallback) {
     $.ajax({
         type: 'GET',
-        url: 'http://52.3.165.15:9000/' + url,
-        // url: 'http://192.168.1.13:9000/' + url,
+      //  url: 'http://52.3.165.15:9000/' + url,
+         url: 'http://192.168.1.13:9000/' + url,
         contentType: "application/json",
         processData: false
     }).done(function(response) {
@@ -31,8 +31,8 @@ function registerPageInits() {
 
     $(document).on("pagebeforechange", function(e, data) {
         if (data.toPage[0].id == "activity-detail-page") {
-            var activityId = data.options.activityId;
-            loadActivityDetail(activityId);
+            var activityName = data.options.activityName;
+            loadActivityDetail(activityName);
         }
     });
     // Activity Detail Page
@@ -43,7 +43,7 @@ function registerPageInits() {
 }
 
 function loadExercises() {
-    $.getJSON("json/learning.json", function(learningExcercise) {
+    makeGetAsyncRequest('careTool/items/', function(learningExcercise) {
         var source = $("#hbt-learning-list").html();
         var template = Handlebars.compile(source);
         var learningList = $("#learning-page .page-content ul")
@@ -55,9 +55,9 @@ function loadExercises() {
 
         // attach click handler
         $("#learning-page .page-content ul a").on('click', function() {
-            var activityId = $(this).attr("data-activity-id");
+            var activityName = $(this).attr("data-activity-name");
             $.mobile.pageContainer.pagecontainer("change", "#activity-detail-page", {
-                activityId: activityId
+                activityName: activityName
             });
         });
     });
@@ -76,9 +76,9 @@ function loadScheduledPatients() {
     });
 }
 
-function loadActivityDetail(activityId) {
-    var url = "json/" + activityId + ".json";
-    $.getJSON(url, function(activityDetail) {
+function loadActivityDetail(activityName) {
+   // var url = "json/" + activityId + ".json";
+    makeGetAsyncRequest('careTool/items/name/' + activityName, function(activityDetail) {
         var source = $("#hbt-activity-detail").html();
         var template = Handlebars.compile(source);
         var activityPageContent = $("#activity-detail-page .page-content");
