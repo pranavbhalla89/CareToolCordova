@@ -71,6 +71,12 @@ function registerPageInits() {
             var sessionType = data.options.sessionType;
             var patientId = data.options.patientId;
             createAssesment(patientId, sessionType);
+        } else if (data.toPage[0].id == "patient-history-list-page") {
+            var patientId = data.options.patientId;
+            loadHistoryList(patientId);
+        } else if (data.toPage[0].id == "patient-history-detail-page") {
+            var itemIndex = data.options.itemIndex;
+            loadHistory(itemIndex);
         }
     });
 }
@@ -121,10 +127,10 @@ function loadScheduledPatients() {
                     });
                 });
             } else {
-                // notes
-                // $.mobile.pageContainer.pagecontainer("change", "#activity-detail-page", {
-                //     activityId: activityId
-                // });
+                // history
+                $.mobile.pageContainer.pagecontainer("change", "#patient-history-list-page", {
+                    patientId: patientId
+                });
             }
         });
     });
@@ -273,4 +279,58 @@ function submitAnswer(assessmentId, answer) {
         }
     });
 
+}
+
+function loadHistoryList(patientId) {
+    makeGetAsyncRequest('patients/getHistory?patientId=' + patientId, function(res) {
+        // new Date(res[h].createdTimestamp)).toDateString()
+        // res[h].evaluator.firstName + " " + res[h].evaluator.lastName
+
+        sessionInfo.patientHistory = res;
+        var source = $("#hbt-history-list").html();
+        var template = Handlebars.compile(source);
+        var historyList = $("#patient-history-list-page .page-content ul");
+        historyList.empty();
+
+        $.each(res, function(index, item) {
+            var viewItems = {
+                firstName: item.evaluator.firstName,
+                lastName: item.evaluator.lastName,
+                date: (new Date(item.createdTimestamp)).toDateString(),
+                dataSessionIndex: index
+            }
+
+            var html = template(viewItems);
+            historyList.append(html);
+        });
+
+        $("#patient-history-list-page .page-content ul a").on('click', function() {
+            var index = $(this).attr("dataSessionIndex");
+            $.mobile.pageContainer.pagecontainer("change", "#patient-history-detail-page", {
+                itemIndex: index
+            });
+        });
+
+    });
+}
+
+function loadHistory(itemIndex) {
+    var chosenSession = sessionInfo.patientHistory[itemIndex];
+    $("#patient-history-detail-page");
+    var source = $("#hbt-history-detail-score").html();
+    var template = Handlebars.compile(source);
+    var scoreList = $("#patient-history-detail-page .page-content ul");
+    scoreList.empty();
+
+    $.each(chosenSession.scores, function(index, item) {
+        var viewItems = {
+            scoreDescription: sessionInfo.possibleAnswers[item.score],
+            activityName: item.name,
+            image: chosenSession.documentation[index].pathToAttachment,
+            comments: chosenSession.documentation[index].comments
+        }
+        
+        var html = template(viewItems);
+        scoreList.append(html);
+    });
 }
