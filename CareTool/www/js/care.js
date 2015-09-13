@@ -52,7 +52,7 @@ function registerPageInits() {
     if (navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
         $("body").addClass("headerMargin");
     }
-    
+
     $.mobile.pageContainer.pagecontainer("change", "#landing-page");
 
     // Learning page
@@ -180,7 +180,7 @@ function loadQuestions() {
     });
 }
 
-function showQuestion(name) {
+function showQuestion(name, answer) {
 
     makeGetAsyncRequest('careTool/items/name/' + name, function(question) {
         $("#score-page .page-content h1").text(question.name);
@@ -190,6 +190,13 @@ function showQuestion(name) {
                 classSelector = ".score-choice-text." + value;
             $("#score-page " + classSelector).text(tip);
         });
+
+        if (answer != null) {
+            $("#score-notes").val(answer.text);
+            var radioSelector = "#radio-score-choice-" + answer.score;
+            $("input:radio[name=radio-score-choice]").checkboxradio("refresh");
+            $(radioSelector).attr("checked", true);
+        }
 
         $('input:radio[name=radio-score-choice]').change(function() {
             $("#score-page .score-choice-text.selected").removeClass("selected").hide();
@@ -213,6 +220,11 @@ function registerAnswerSubmit() {
             $.mobile.pageContainer.pagecontainer("change", "#scheduling-page", null);
         });
     });
+
+    $("#score-page a.ui-icon-arrow-l").on('click', function() {
+        sessionInfo.currentExercise--;
+        showQuestion(sessionInfo.exerciseList[sessionInfo.currentExercise].name, sessionInfo.savedAnswers[sessionInfo.currentExercise]);
+    }); 
 
     $("#score-page a.ui-icon-arrow-r").on('click', function() {
         var assignedScore = $('input:radio[name=radio-score-choice]:checked').val();
