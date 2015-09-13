@@ -32,11 +32,11 @@
         <title>CARE Tool</title>
     </head>
     <body>
-        <div data-role="page" id="splash-page" class="splashPage">
+        <div data-role="page" class="carepages splashPage" id="splash-page">
             <h1 class="splashHeader">Welcome</h1>
         </div>
 
-        <div data-role="page" id="landing-page">
+        <div data-role="page" class="carepages" id="landing-page">
             <div data-role="header" class="careHeader">
                 <h1>Care Tool</h1>
             </div><!-- /header -->
@@ -52,7 +52,7 @@
 
 
         <!--Learning-->
-        <div data-role="page" id="learning-page">
+        <div data-role="page" class="carepages" id="learning-page">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Exercises</h1>
             </div><!--Header-->
@@ -68,7 +68,7 @@
         </div><!--Page Learning-->
 
         <!--Activity Detail-->
-        <div data-role="page" id="activity-detail-page" data-add-back-btn="true">
+        <div data-role="page" class="carepages" id="activity-detail-page" data-add-back-btn="true">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Info</h1>
             </div><!--Header-->
@@ -88,7 +88,7 @@
         </div><!--Page Activity Detail-->
 
         <!--Scheduling-->
-        <div data-role="page" id="scheduling-page" data-url="scheduling">
+        <div data-role="page" class="carepages" id="scheduling-page" data-url="scheduling">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Patients</h1>
             </div><!--Header-->
@@ -127,7 +127,7 @@
         </div><!--Page Scheduling-->
 
         <!--Scoring Detail-->
-        <div data-role="page" id="score-page" data-add-back-btn="true">
+        <div data-role="page" class="carepages" id="score-page" data-add-back-btn="true">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Score</h1>
             </div><!--Header-->
@@ -148,7 +148,7 @@
 
                     <fieldset class="ui-grid-b text-center">
                         <div>
-                            <fieldset data-role="controlgroup" data-mini="true">
+                            <fieldset data-role="controlgroup">
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-1" value="1">
                                 <label for="radio-score-choice-1">1. Dependent </label>
@@ -197,7 +197,7 @@
                         <a href="#" class="ui-shadow ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Prev</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#scheduling-page" data-role="button" data-theme="c">Home</a>
+                        <a href="#landing-page" data-role="button" data-theme="c">Home</a>
                     </div>
                     <div class="ui-block-c">
                         <a href="#" class="ui-shadow ui-btn ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-arrow-r">Next</a>
@@ -214,7 +214,7 @@
         </div><!--Page Scoring Detail-->
 
         <!--Patient History List-->
-        <div data-role="page" id="patient-history-list-page" data-add-back-btn="true">
+        <div data-role="page" class="carepages" id="patient-history-list-page" data-add-back-btn="true">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Patient History</h1>
             </div><!--Header-->
@@ -231,7 +231,7 @@
         </div><!--Page Patient History List-->
 
         <!--Patient History Detail-->
-        <div data-role="page" id="patient-history-detail-page" data-add-back-btn="true">
+        <div data-role="page" class="carepages" id="patient-history-detail-page" data-add-back-btn="true">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Patient History</h1>
             </div><!--Header-->
