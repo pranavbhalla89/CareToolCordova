@@ -245,7 +245,9 @@
                   <h1 class="infoHeader">{{activityName}}</h1>
                     <h2>Score:{{scoreDescription}}</h2>
                     <h3>Comments: {{comments}} </h3>
-                    <img src="{{image}}" alt="No Image uploaded">
+                    <div data-role="content" data-position-to="window" data-tolerance="10,10,10,10">
+                        <img src="{{image}}" style="width: 50%;position: relative;/* z-index: 100; */"alt="No Image uploaded">
+                    </div>
                 </li>            
             </script>
         </div><!--Page Patient History Detail-->
