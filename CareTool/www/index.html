@@ -63,7 +63,7 @@
                 </ul>
             </div><!--List-->
               <script id="hbt-learning-list" type="text/x-handlebars-template">
-                        <li><a data-activity-name="{{name}}" class="careLink">+ {{name}}</a></li>
+                        <li><a data-activity-name="{{name}}" class="careLink ui-btn">+ {{name}}</a></li>
                     </script>
         </div><!--Page Learning-->
 
@@ -96,10 +96,11 @@
             <div data-role="content" class="page-content">
                 <div data-role="collapsible-set">
                     <script id="hbt-patient-list" type="text/x-handlebars-template">
-                    <div data-role="collapsible">
-                    <h3>{{firstName}} {{lastName}}</h3>
-                    <p><a data-patient-id={{id}} class="scheduling-page-a score">Score</a><a data-patient-id={{id}} class="scheduling-page-a notes">Notes</a></p>
-                    </div>
+                        <div data-role="collapsible">
+                            <h3>{{firstName}} {{lastName}}</h3>
+                            <p><a data-patient-id={{id}} class="scheduling-page-a score ui-btn">Score</a>
+                            <a data-patient-id={{id}} class="scheduling-page-a notes ui-btn">History</a></p>
+                        </div>
                     </script>
                 </div>
             </div><!--Content-->
@@ -128,31 +129,46 @@
         <!--Scoring Detail-->
         <div data-role="page" id="score-page" data-add-back-btn="true">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
-                <h1></h1>
+                <h1>Score</h1>
             </div><!--Header-->
 
             <div data-role="content" class="page-content">
+                <h1></h1>
                 <div>
+                    <!-- Notes and Image -->
+                    <div data-role="collapsible">
+                        <h3>Notes and Images</h3>
+                        <p><div>
+                            <div class="ui-field-contain">
+                                <textarea name="textarea" id="score-notes" placeholder="Enter notes here"></textarea>
+                            </div>
+                            <input type="file" id="score-media"/>
+                        </div></p>
+                    </div>
+
                     <fieldset class="ui-grid-b text-center">
-                        <div class="ui-block-a activity-btns">
-                            <fieldset data-role="controlgroup">
+                        <div>
+                            <fieldset data-role="controlgroup" data-mini="true">
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-1" value="1">
                                 <label for="radio-score-choice-1">1. Dependent </label>
-                                <div class="score-choice-text dependent"></div>
+                                <div class="score-choice-text dependent" style="display: none;"></div>
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-2" value="2">
                                 <label for="radio-score-choice-2">2. Substantial / Maximal Assistance </label>
-                                <div class="score-choice-text substantial"></div>
+                                <div class="score-choice-text substantial" style="display: none;"></div>
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-3" value="3">
                                 <label for="radio-score-choice-3">3. Partial / Moderate Assistance</label>
+                                <div class="score-choice-text partial" style="display: none;"></div>
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-4" value="4">
                                 <label for="radio-score-choice-4">4. Supervision / Touching Assistance</label>
+                                <div class="score-choice-text supervision" style="display: none;"></div>
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-5" value="5">
                                 <label for="radio-score-choice-5">5. Setup or Clean-Up Assistance</label>
+                                <div class="score-choice-text setup" style="display: none;"></div>
 
                                 <input type="radio" name="radio-score-choice" id="radio-score-choice-6" value="6">
                                 <label for="radio-score-choice-6">6. Independent</label>
@@ -174,6 +190,27 @@
                     </fieldset>
                 </div><!--Buttons-->
             </div><!--Content-->
+
+            <div data-role="footer" data-position="fixed" data-id="footernav" data-theme="b">
+                <div class="ui-grid-b text-center">
+                    <div class="ui-block-a">
+                        <a href="#" class="ui-shadow ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Prev</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#scheduling-page" data-role="button" data-theme="c">Home</a>
+                    </div>
+                    <div class="ui-block-c">
+                        <a href="#" class="ui-shadow ui-btn ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-arrow-r">Next</a>
+                    </div>
+                </div>
+            </div><!--Footer-->
+
+            <div data-role="popup" id="score-page-submit-manager" class="ui-content page-backdrop" data-overlay-theme="a">
+                <h3>Submit to Manager</h3>
+                <a id="manager-submit" data-role="button" data-theme="c">Yes</a>
+                <a href="#scheduling-page" data-role="button" data-theme="c">No</a>
+            </div><!--Submit to manager Popup-->
+
         </div><!--Page Scoring Detail-->
 
         <!-- Don't need this js while testing in the browser -->

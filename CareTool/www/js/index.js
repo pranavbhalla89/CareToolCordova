@@ -27,13 +27,13 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         // document.addEventListener('deviceready', this.onDeviceReady, false);
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-            document.addEventListener("deviceready", this.onDeviceReady, false);
-        } else {
+        // if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        //     document.addEventListener("deviceready", this.onDeviceReady, false);
+        // } else {
             $(document).ready(function() {
                 app.onDeviceReady();
             });
-        }
+        // }
     },
     // deviceready Event Handler
     //

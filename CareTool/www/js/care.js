@@ -2,10 +2,18 @@
 var sessionInfo = {
     peeteeId: 1,
     possibleAnswers: ["", "Dependent", "Substantial / Maximal Assistance", "Partial / Moderate Assistance", "Supervision / Touching Assistance", "Setup or Clean-Up Assistance", "Independent", "Not Attempted - Safety Concerns", "Not Applicable", "Not Completed", "Patient Refused"],
-    answerShorts: ["dependent", "substantial", "partial", "supervision", "setup", "independent"]
+    answerShorts: ["dependent", "substantial", "partial", "supervision", "setup", "independent"],
+    savedAnswers: []
 };
 
+function loading(showOrHide) {
+    setTimeout(function() {
+        $.mobile.loading(showOrHide);
+    }, 1);
+}
+
 function makeGetAsyncRequest(url, successCallback) {
+    loading("show");
     $.ajax({
         type: 'GET',
         // url: 'http://52.3.165.15:9000/' + url,
@@ -13,13 +21,16 @@ function makeGetAsyncRequest(url, successCallback) {
         contentType: "application/json",
         processData: false
     }).done(function(response) {
+        loading("hide");
         successCallback(response);
     }).fail(function(response) {
+        loading("hide");
         console.log(response);
     })
 }
 
 function makePostAsyncRequest(url, data, successCallback) {
+    loading("show");
     $.ajax({
         type: 'POST',
         // url: 'http://52.3.165.15:9000/' + url,
@@ -28,8 +39,10 @@ function makePostAsyncRequest(url, data, successCallback) {
         contentType: "application/json",
         processData: false
     }).done(function(response) {
+        loading("hide");
         successCallback(response);
     }).fail(function(response) {
+        loading("hide");
         console.log(response);
     })
 }
@@ -46,6 +59,10 @@ function registerPageInits() {
         loadScheduledPatients();
     });
 
+    $("#score-page").on("pagebeforecreate", function() {
+        registerAnswerSubmit();
+    });
+
     $(document).on("pagebeforechange", function(e, data) {
         if (data.toPage[0].id == "activity-detail-page") {
             var activityName = data.options.activityName;
@@ -56,11 +73,6 @@ function registerPageInits() {
             createAssesment(patientId, sessionType);
         }
     });
-    // Activity Detail Page
-    // $("#activity-detail-page").on("pagebeforeshow", function(e, data) {
-    //     var activityId = data.options.activityId;
-    //     loadActivityDetail(activityId);
-    // });
 }
 
 function loadExercises() {
@@ -119,7 +131,7 @@ function loadScheduledPatients() {
 }
 
 function loadActivityDetail(activityName) {
-   // var url = "json/" + activityId + ".json";
+    // var url = "json/" + activityId + ".json";
     makeGetAsyncRequest('careTool/items/name/' + activityName, function(activityDetail) {
         var source = $("#hbt-activity-detail").html();
         var template = Handlebars.compile(source);
@@ -160,56 +172,105 @@ function loadQuestions() {
 function showQuestion(name) {
 
     makeGetAsyncRequest('careTool/items/name/' + name, function(question) {
-        $("#score-page .careHeader h1").text("Score " + question.name);
+        $("#score-page .page-content h1").text(question.name);
 
-
-        // $("#score-page .score-choice-text.dependent")answerShorts
-
-        $('input:radio[name=radio-score-choice]').change(function() {
-            $('input:radio[name=radio-score-choice]:checked').val()
+        $.each(sessionInfo.answerShorts, function(i, value) {
+            var tip = question[value],
+                classSelector = ".score-choice-text." + value;
+            $("#score-page " + classSelector).text(tip);
         });
 
+        $('input:radio[name=radio-score-choice]').change(function() {
+            $("#score-page .score-choice-text.selected").removeClass("selected").hide();
+            $('input:radio[name=radio-score-choice]:checked').closest("div").next(".score-choice-text").show().addClass("selected");
+        });
 
-        //Description
-        // $("#score-page-score-desc").html(question.description);
-        // //Exceptions
-        // var u = "";
-        // var redX = "<span style='color:red'>&#10008</span> ";
-        // for (var i in question.exceptions) {
-        //     u += redX + question.exceptions[i];
-        //     if (i < question.exceptions.length) u += "<br>";
-        // }
-        // $("#score-page-score-excep").html(u);
-        // //Tips
-        // var v = "";
-        // var grnChk = "<span style='color:green'>&#10003</span> ";
-        // for (var j in question.tips) {
-        //     v += grnChk + question.tips[j];
-        //     if (i < question.exceptions.length) v += "<br>";
-        // }
-        // $("#score-page-score-tips").html(v);
+    });
+}
 
-        // // replace the scoring details with tips for this excercise
-        // var currentQuestion = storeObject.exerciseList[storeObject.currentExercise];
-        // var fileName = "json/" + currentQuestion.code + ".json";
-        // $.getJSON(fileName, function(result) {
-        //     // var templateHTML = storeObject.questionTemplateHTML;
-        //     $.each(storeObject.answerShorts, function(i, value) {
-        //         var tipList = result[value],
-        //             textToReplace = "";
-                    
-        //         $.each(tipList, function(index) {
-        //             textToReplace += tipList[index] + "<br/>";
-        //         });
-        //         //templateHTML = templateHTML.replace("{" + value + "}", textToReplace)
-        //         // $("#radio-score-choice-" + (i+1)).siblings("label").html((i + 1) + ". " + value + "<br/>" + textToReplace);
-        //         $("#radio-score-choice-" + (i+1) + "-popup").html(textToReplace);
-        //     });
-        // });
+function registerAnswerSubmit() {
+    // handle file selection
+    $('#score-media').on('change', function(event) {
+        sessionInfo.fileToUpload = event.target.files;
+    });
 
-        // $('input:radio[name=radio-score-choice]').change(function() {
-        //     $("#score-page-scoring").popup("close");
-        // });
+    // handle assessment submission
+    $("#manager-submit").on('click', function() {
+        makePostAsyncRequest('assessment/sendToManager/' + sessionInfo.assessmentId, null, function() {
+            $("#score-page-submit-manager").popup("close");
+            alert('Submitted to manager');
+            $.mobile.pageContainer.pagecontainer("change", "#scheduling-page", null);
+        });
+    });
+
+    $("#score-page a.ui-icon-arrow-r").on('click', function() {
+        var assignedScore = $('input:radio[name=radio-score-choice]:checked').val();
+        if (assignedScore != undefined && assignedScore != null) {
+            var answer = {
+                "timestamp": (new Date()).getTime(),
+                "code": sessionInfo.exerciseList[sessionInfo.currentExercise].code,
+                "score": $('input:radio[name=radio-score-choice]:checked').val(),
+                "peeteeId": sessionInfo.peeteeId,
+                "text": $("#score-notes").val(),
+                "mediaUrl": null
+            }
+
+            if (sessionInfo.fileToUpload != null && sessionInfo.fileToUpload != undefined && sessionInfo.fileToUpload.length != 0) {
+                // upload file to S3
+                var data = new FormData();
+                $.each(sessionInfo.fileToUpload, function(key, value) {
+                    data.append("file", value);
+                });
+
+                loading("show");
+                $.ajax({
+                    // url: 'http://52.3.165.15:9000/assessment/uploadFile',
+                    url: 'http://192.168.1.13:9000/assessment/uploadFile',
+                    type: 'POST',
+                    data: data,
+                    cache: false,
+                    processData: false, // Don't process the files
+                    contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+                }).done(function(response) {
+                    console.log(response);
+                    loading("hide");
+                    answer.mediaUrl = response;
+
+                    submitAnswer(sessionInfo.assessmentId, answer);
+
+                }).fail(function(error) {
+                    loading("hide");
+                    alert(JSON.stringify(error));
+                });
+            } else {
+                submitAnswer(sessionInfo.assessmentId, answer);
+            }
+        } else {
+            alert("Please make a choice first");
+        }
+    });
+}
+
+function submitAnswer(assessmentId, answer) {
+
+    makePostAsyncRequest('assessment/addScore?assessmentId=' + assessmentId, answer, function(response) {
+        // save the answers to session
+        sessionInfo.savedAnswers[sessionInfo.currentExercise] = answer;
+        // clear the existing choices
+        $("#score-notes").val("");
+        $("#score-media").val('');
+
+        $('input:radio[name=radio-score-choice]:checked').removeAttr("checked");
+        $("input:radio[name=radio-score-choice]").checkboxradio("refresh");
+        $("#score-page .score-choice-text.selected").removeClass("selected").hide();
+
+        // goto next question
+        sessionInfo.currentExercise++;
+        if (sessionInfo.currentExercise == sessionInfo.exerciseList.length) {
+            $("#score-page-submit-manager").popup("open");
+        } else {
+            showQuestion(sessionInfo.exerciseList[sessionInfo.currentExercise].name);
+        }
     });
 
 }
