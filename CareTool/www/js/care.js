@@ -76,10 +76,10 @@ function registerPageInits() {
             var sessionType = data.options.sessionType;
             var patientId = data.options.patientId;
             createAssesment(patientId, sessionType);
-        } else if (data.toPage[0].id == "patient-history-list-page") {
+        } else if (data.toPage[0].id == "patient-history-list-page" && data.options.patientId != null) {
             var patientId = data.options.patientId;
             loadHistoryList(patientId);
-        } else if (data.toPage[0].id == "patient-history-detail-page") {
+        } else if (data.toPage[0].id == "patient-history-detail-page" && data.options.itemIndex != null) {
             var itemIndex = data.options.itemIndex;
             loadHistory(itemIndex);
         }
@@ -98,7 +98,7 @@ function loadExercises() {
         });
 
         // attach click handler
-        $("#learning-page .page-content ul a").on('click', function() {
+        $("#learning-page .page-content ul a").on('tap', function() {
             var activityName = $(this).attr("data-activity-name");
             $.mobile.pageContainer.pagecontainer("change", "#activity-detail-page", {
                 activityName: activityName
@@ -119,12 +119,12 @@ function loadScheduledPatients() {
             patientList.append(html).trigger('create');
         });
 
-        $("#scheduling-page .page-content a.scheduling-page-a").on('click', function() {
+        $("#scheduling-page .page-content a.scheduling-page-a").on('tap', function() {
             var patientId = $(this).attr("data-patient-id");
             if ($(this).hasClass("score")) {
                 // score
                 $("#document-session-type-popup").popup("open");
-                $("#document-session-type-next").on('click', function() {
+                $("#document-session-type-next").on('tap', function() {
                     var sessionType = $('input:radio[name=document-session-type-choice]:checked').val();
                     $.mobile.pageContainer.pagecontainer("change", "#score-page", {
                         sessionType: sessionType,
@@ -213,7 +213,7 @@ function registerAnswerSubmit() {
     });
 
     // handle assessment submission
-    $("#manager-submit").on('click', function() {
+    $("#manager-submit").on('tap', function() {
         makePostAsyncRequest('assessment/sendToManager/' + sessionInfo.assessmentId, null, function() {
             $("#score-page-submit-manager").popup("close");
             alert('Submitted to manager');
@@ -221,12 +221,12 @@ function registerAnswerSubmit() {
         });
     });
 
-    $("#score-page a.ui-icon-arrow-l").on('click', function() {
+    $("#score-page a.ui-icon-arrow-l").on('tap', function() {
         sessionInfo.currentExercise--;
         showQuestion(sessionInfo.exerciseList[sessionInfo.currentExercise].name, sessionInfo.savedAnswers[sessionInfo.currentExercise]);
     }); 
 
-    $("#score-page a.ui-icon-arrow-r").on('click', function() {
+    $("#score-page a.ui-icon-arrow-r").on('tap', function() {
         var assignedScore = $('input:radio[name=radio-score-choice]:checked').val();
         if (assignedScore != undefined && assignedScore != null) {
             var answer = {
@@ -321,7 +321,7 @@ function loadHistoryList(patientId) {
             historyList.append(html);
         });
 
-        $("#patient-history-list-page .page-content ul a").on('click', function() {
+        $("#patient-history-list-page .page-content ul a").on('tap', function() {
             var index = $(this).attr("dataSessionIndex");
             $.mobile.pageContainer.pagecontainer("change", "#patient-history-detail-page", {
                 itemIndex: index
