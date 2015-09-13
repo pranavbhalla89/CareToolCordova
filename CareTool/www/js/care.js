@@ -48,6 +48,11 @@ function makePostAsyncRequest(url, data, successCallback) {
 }
 
 function registerPageInits() {
+    // header spacing for iOs devices
+    if (navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
+        $("body").addClass("headerMargin");
+    }
+    
     $.mobile.pageContainer.pagecontainer("change", "#landing-page");
 
     // Learning page
@@ -329,7 +334,7 @@ function loadHistory(itemIndex) {
             image: chosenSession.documentation[index].pathToAttachment,
             comments: chosenSession.documentation[index].comments
         }
-        
+
         var html = template(viewItems);
         scoreList.append(html);
     });

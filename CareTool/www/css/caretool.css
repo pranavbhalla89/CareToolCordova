@@ -1,3 +1,7 @@
+body.headerMargin div.carepages {
+	margin-top: 20px !important;
+}
+
 div.splashPage {
 	background-color:#C6D9CC !important;
 }
