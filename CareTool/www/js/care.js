@@ -17,7 +17,7 @@ function makeGetAsyncRequest(url, successCallback) {
     $.ajax({
         type: 'GET',
         // url: 'http://52.3.165.15:9000/' + url,
-        url: 'http://192.168.1.13:9000/' + url,
+        url: 'http://10.0.14.122:9000/' + url,
         contentType: "application/json",
         processData: false
     }).done(function(response) {
@@ -34,7 +34,7 @@ function makePostAsyncRequest(url, data, successCallback) {
     $.ajax({
         type: 'POST',
         // url: 'http://52.3.165.15:9000/' + url,
-        url: 'http://192.168.1.13:9000/' + url,
+        url: 'http://10.0.14.122:9000/' + url,
         data: JSON.stringify(data),
         contentType: "application/json",
         processData: false
@@ -90,11 +90,15 @@ function loadExercises() {
     makeGetAsyncRequest('careTool/items/', function(learningExcercise) {
         var source = $("#hbt-learning-list").html();
         var template = Handlebars.compile(source);
-        var learningList = $("#learning-page .page-content ul")
+        var mobilityLearningList = $("#learning-page .page-content ul.mobility")
+        var selfcareLearningList = $("#learning-page .page-content ul.selfcare")
 
         $.each(learningExcercise, function(index, item) {
             var html = template(item);
-            var li = learningList.append(html);
+            if(item.set == "Self-Care")
+                var selfcareli = selfcareLearningList.append(html);
+            if(item.set == "Mobility")
+                var mobilityli = mobilityLearningList.append(html);
         });
 
         // attach click handler
@@ -248,7 +252,7 @@ function registerAnswerSubmit() {
                 loading("show");
                 $.ajax({
                     // url: 'http://52.3.165.15:9000/assessment/uploadFile',
-                    url: 'http://192.168.1.13:9000/assessment/uploadFile',
+                    url: 'http://10.0.14.122:9000/assessment/uploadFile',
                     type: 'POST',
                     data: data,
                     cache: false,
