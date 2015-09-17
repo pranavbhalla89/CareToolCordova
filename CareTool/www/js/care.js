@@ -261,6 +261,13 @@ function registerAnswerSubmit() {
             $("#score-page-submit-manager").popup("close");
             alert('Submitted to manager');
             $.mobile.pageContainer.pagecontainer("change", "#scheduling-page");
+
+            var data = {
+                "email": "sergmor@gmail.com",
+                "pt": "Cosmo Kramer",
+                "patient": "John Doe"
+            }
+            makePostAsyncRequest('notify/assessment', data, function(){});
         });
     });
 
