@@ -96,11 +96,15 @@ function loadExercises() {
     makeGetAsyncRequest('careTool/items/', function(learningExcercise) {
         var source = $("#hbt-learning-list").html();
         var template = Handlebars.compile(source);
-        var learningList = $("#learning-page .page-content ul");
+        var mobilityLearningList = $("#learning-page .page-content ul.mobility")
+        var selfcareLearningList = $("#learning-page .page-content ul.selfcare")
 
         $.each(learningExcercise, function(index, item) {
             var html = template(item);
-            var li = learningList.append(html);
+            if(item.set == "Self-Care")
+                var selfcareli = selfcareLearningList.append(html);
+            if(item.set == "Mobility")
+                var mobilityli = mobilityLearningList.append(html);
         });
 
         // attach click handler
