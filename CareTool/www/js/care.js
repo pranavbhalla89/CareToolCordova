@@ -17,7 +17,8 @@ function makeGetAsyncRequest(url, successCallback) {
     $.ajax({
         type: 'GET',
         // url: 'http://52.3.165.15:9000/' + url,
-        url: 'http://192.168.1.13:9000/' + url,
+        // url: 'http://192.168.1.13:9000/' + url,
+        url: 'http://10.0.14.122:9000/' + url,
         contentType: "application/json",
         processData: false
     }).done(function(response) {
@@ -34,7 +35,8 @@ function makePostAsyncRequest(url, data, successCallback) {
     $.ajax({
         type: 'POST',
         // url: 'http://52.3.165.15:9000/' + url,
-        url: 'http://192.168.1.13:9000/' + url,
+        // url: 'http://192.168.1.13:9000/' + url,
+        url: 'http://10.0.14.122:9000/' + url,
         data: JSON.stringify(data),
         contentType: "application/json",
         processData: false
@@ -73,9 +75,13 @@ function registerPageInits() {
             var activityName = data.options.activityName;
             loadActivityDetail(activityName);
         } else if (data.toPage[0].id == "score-page") {
-            var sessionType = data.options.sessionType;
-            var patientId = data.options.patientId;
-            createAssesment(patientId, sessionType);
+            if (data.options.sessionType == null || data.options.patientId == null) {
+                e.preventDefault();
+            } else {
+                var sessionType = data.options.sessionType;
+                var patientId = data.options.patientId;
+                createAssesment(patientId, sessionType);
+            }
         } else if (data.toPage[0].id == "patient-history-list-page" && data.options.patientId != null) {
             var patientId = data.options.patientId;
             loadHistoryList(patientId);
@@ -90,7 +96,7 @@ function loadExercises() {
     makeGetAsyncRequest('careTool/items/', function(learningExcercise) {
         var source = $("#hbt-learning-list").html();
         var template = Handlebars.compile(source);
-        var learningList = $("#learning-page .page-content ul")
+        var learningList = $("#learning-page .page-content ul");
 
         $.each(learningExcercise, function(index, item) {
             var html = template(item);
@@ -217,14 +223,14 @@ function registerAnswerSubmit() {
         makePostAsyncRequest('assessment/sendToManager/' + sessionInfo.assessmentId, null, function() {
             $("#score-page-submit-manager").popup("close");
             alert('Submitted to manager');
-            $.mobile.pageContainer.pagecontainer("change", "#scheduling-page", null);
+            $.mobile.pageContainer.pagecontainer("change", "#scheduling-page");
         });
     });
 
     $("#score-page a.ui-icon-arrow-l").on('tap', function() {
         sessionInfo.currentExercise--;
         showQuestion(sessionInfo.exerciseList[sessionInfo.currentExercise].name, sessionInfo.savedAnswers[sessionInfo.currentExercise]);
-    }); 
+    });
 
     $("#score-page a.ui-icon-arrow-r").on('tap', function() {
         var assignedScore = $('input:radio[name=radio-score-choice]:checked').val();
@@ -248,7 +254,8 @@ function registerAnswerSubmit() {
                 loading("show");
                 $.ajax({
                     // url: 'http://52.3.165.15:9000/assessment/uploadFile',
-                    url: 'http://192.168.1.13:9000/assessment/uploadFile',
+                    // url: 'http://192.168.1.13:9000/assessment/uploadFile',
+                    url: 'http://10.0.14.122:9000/assessment/uploadFile',
                     type: 'POST',
                     data: data,
                     cache: false,
