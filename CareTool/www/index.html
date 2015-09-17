@@ -145,6 +145,7 @@
         <div data-role="page" class="carepages" id="score-page" data-add-back-btn="true">
             <div data-role="header" data-add-back-btn="true" class="careHeader">
                 <h1>Score</h1>
+                <a href="#score-page-menu-panel" data-role="button" data-mini="true" class="ui-btn-right">Jump To</a>
             </div><!--Header-->
 
             <div data-role="content" class="page-content">
@@ -212,7 +213,7 @@
                         <a href="#" class="ui-shadow ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Prev</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#landing-page" data-role="button" data-theme="c">Home</a>
+                        <a href="#scheduling-page" data-role="button" data-rel="popup" data-theme="c">Home</a>
                     </div>
                     <div class="ui-block-c">
                         <a href="#" class="ui-shadow ui-btn ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-arrow-r">Next</a>
@@ -225,6 +226,21 @@
                 <a id="manager-submit" data-role="button" data-theme="c">Yes</a>
                 <a href="#scheduling-page" data-role="button" data-theme="c">No</a>
             </div><!--Submit to manager Popup-->
+
+            <div data-role="panel" id="score-page-menu-panel" data-position="right">
+                <a href="#landing-page" data-role="button" data-theme="c" data-mini="true">Home</a>
+                <div data-role="collapsible" data-mini="true" class="mobility">
+                    <h3>Mobility</h3>
+                    <p></p>
+                </div>
+                <div data-role="collapsible" data-mini="true" class="selfcare">
+                    <h3>Self Care</h3>
+                    <p></p>
+                </div>
+                <script id="hbt-score-page-menu" type="text/x-handlebars-template">
+                    <a data-role="button" class="ui-btn ui-mini" data-theme="c" data-menu-index={{index}}>{{name}}</a>
+                </script>
+            </div><!--Menu Popup-->
 
         </div><!--Page Scoring Detail-->
 

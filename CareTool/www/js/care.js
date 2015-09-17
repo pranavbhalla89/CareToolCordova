@@ -16,9 +16,9 @@ function makeGetAsyncRequest(url, successCallback) {
     loading("show");
     $.ajax({
         type: 'GET',
-        // url: 'http://52.3.165.15:9000/' + url,
+        url: 'http://54.175.31.213:9000/' + url,
         // url: 'http://192.168.1.13:9000/' + url,
-        url: 'http://10.0.14.122:9000/' + url,
+        // url: 'http://10.0.14.122:9000/' + url,
         contentType: "application/json",
         processData: false
     }).done(function(response) {
@@ -34,9 +34,9 @@ function makePostAsyncRequest(url, data, successCallback) {
     loading("show");
     $.ajax({
         type: 'POST',
-        // url: 'http://52.3.165.15:9000/' + url,
+        url: 'http://54.175.31.213:9000/' + url,
         // url: 'http://192.168.1.13:9000/' + url,
-        url: 'http://10.0.14.122:9000/' + url,
+        // url: 'http://10.0.14.122:9000/' + url,
         data: JSON.stringify(data),
         contentType: "application/json",
         processData: false
@@ -177,13 +177,46 @@ function createAssesment(patientId, sessionType) {
 function loadQuestions() {
     if (sessionInfo.exerciseList != null && sessionInfo.exerciseList != undefined) {
         showQuestion(sessionInfo.exerciseList[0].name);
+        loadScorePageMenuItems(sessionInfo.exerciseList);
+    } else {
+        makeGetAsyncRequest('careTool/items/', function(response) {
+            console.log(response);
+            sessionInfo.exerciseList = response;
+            sessionInfo.currentExercise = 0;
+            showQuestion(response[0].name);
+            loadScorePageMenuItems(sessionInfo.exerciseList);
+        });
     }
-    makeGetAsyncRequest('careTool/items/', function(response) {
-        console.log(response);
-        sessionInfo.exerciseList = response;
-        sessionInfo.currentExercise = 0;
-        showQuestion(response[0].name);
+}
+
+function loadScorePageMenuItems(exerciseList) {
+    var source = $("#hbt-score-page-menu").html();
+    var template = Handlebars.compile(source);
+    var mobilityScorePageMenuList = $("#score-page-menu-panel div.mobility p");
+    var selfcareScorePageMenuList = $("#score-page-menu-panel div.selfcare p");
+    mobilityScorePageMenuList.empty();
+    selfcareScorePageMenuList.empty();
+
+    $.each(exerciseList, function(index, item) {
+        var viewItem = {
+            name: item.name,
+            index:  index
+        };
+        var html = template(viewItem);
+        if (item.set == "Mobility") {
+            mobilityScorePageMenuList.append(html);
+        } else {
+            selfcareScorePageMenuList.append(html);
+        }
     });
+
+    $("#score-page-menu-panel p a").on('tap', function(){
+        $("#score-page-menu-panel").panel( "close" );
+        var itemIndex = $(this).attr("data-menu-index");
+        sessionInfo.currentExercise = itemIndex;
+        showQuestion(sessionInfo.exerciseList[sessionInfo.currentExercise].name, sessionInfo.savedAnswers[sessionInfo.currentExercise]);
+    });
+    
 }
 
 function showQuestion(name, answer) {
@@ -253,9 +286,9 @@ function registerAnswerSubmit() {
 
                 loading("show");
                 $.ajax({
-                    // url: 'http://52.3.165.15:9000/assessment/uploadFile',
+                    url: 'http://54.175.31.213:9000/assessment/uploadFile',
                     // url: 'http://192.168.1.13:9000/assessment/uploadFile',
-                    url: 'http://10.0.14.122:9000/assessment/uploadFile',
+                    // url: 'http://10.0.14.122:9000/assessment/uploadFile',
                     type: 'POST',
                     data: data,
                     cache: false,
